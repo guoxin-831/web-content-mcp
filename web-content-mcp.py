@@ -36,7 +36,29 @@ def configure_html2text():
     h.body_width = 0             # 不自动换行，保持文本段落完整
     return h
 
-# 2. 注册工具（升级了 inputSchema，加入 selector 参数）
+def get_default_headers(url: str) -> dict:
+    """根据目标 URL 生成合适的请求头"""
+    parsed = urllib.parse.urlparse(url)
+    base_domain = f"{parsed.scheme}://{parsed.netloc}"
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+    }
+    
+    # 根据访问目标动态设置 Referer
+    if "weibo.com" in url or "weibo.cn" in url:
+        headers["Referer"] = "https://weibo.com/"
+        headers["Origin"] = "https://weibo.com"
+    else:
+        headers["Referer"] = base_domain + "/"
+        
+    return headers
+
+# 2. 注册工具
 @server.list_tools()
 async def handle_list_tools() -> list[types.Tool]:
     return [
@@ -74,14 +96,10 @@ async def handle_call_tool(
     url = arguments["url"]
     selector = arguments.get("selector")
     
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
-    }
+    headers = get_default_headers(url)
     
     try:
-        r = requests.get(url, headers=headers, timeout=10)
+        r = requests.get(url, headers=headers, timeout=15)
         r.raise_for_status()
         r.encoding = r.apparent_encoding
         
@@ -114,7 +132,7 @@ async def handle_call_tool(
             content_node = soup.body if soup.body else soup
 
         # ----------------------------------------------------
-        # 提取区域内的重要超链接（供 AI 决策链使用）
+        # 提取区域内的重要超链接
         # ----------------------------------------------------
         extracted_links = []
         for a_tag in content_node.find_all("a", href=True):
@@ -152,7 +170,6 @@ async def handle_call_tool(
             "extracted_links": unique_links
         }
         
-        # 返回 JSON 字符串结果给 LLM
         return [types.TextContent(type="text", text=json.dumps(result_data, ensure_ascii=False, indent=2))]
 
     except Exception as e:

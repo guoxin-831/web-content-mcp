@@ -1,59 +1,41 @@
-# Introduction to GitHub
+# 🌐 Web Content Fetcher (MCP Server)
 
-<!-- ![](https://github.com/guoxin-831/skills-introduction-to-github/actions/workflows/0-start-exercise.yml/badge.svg) -->
-![](https://github.com/guoxin-831/skills-introduction-to-github/actions/workflows/1-create-a-branch.yml/badge.svg)
-![](https://github.com/guoxin-831/skills-introduction-to-github/actions/workflows/2-commit-a-file.yml/badge.svg)
-![](https://github.com/guoxin-831/skills-introduction-to-github/actions/workflows/3-open-a-pull-request.yml/badge.svg)
-![](https://github.com/guoxin-831/skills-introduction-to-github/actions/workflows/4-merge-your-pull-request.yml/badge.svg)
+[![GitHub Actions CI/CD](https://github.com/你的GitHub用户名/仓库名/actions/workflows/docker-build.yml/badge.svg)](https://github.com/你的GitHub用户名/仓库名/actions)
+![Docker Image](https://img.shields.io/badge/Docker-Aliyun%20ACR-blue)
+![Python](https://img.shields.io/badge/Python-3.10%2B-green)
+![MCP](https://img.shields.io/badge/MCP-1.0%2B-purple)
 
-_Get started using GitHub in less than an hour._
-
-## Welcome
-
-People use GitHub to build some of the most advanced technologies in the world. Whether you’re visualizing data or building a new game, there’s a whole community and set of tools on GitHub that can help you do it even better. GitHub Skills’ “Introduction to GitHub” exercise guides you through everything you need to start contributing in less than an hour.
-
-- **Who is this for**: New developers, new GitHub users, and students.
-- **What you'll learn**: We'll introduce repositories, branches, commits, and pull requests.
-- **What you'll build**: We'll make a short Markdown file you can use as your [profile README](https://docs.github.com/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme).
-- **Prerequisites**: None. This exercise is a great introduction for your first day on GitHub.
-- **How long**: This exercise takes less than one hour to complete.
-
-In this exercise, you will:
-
-1. Create a branch
-2. Commit a file
-3. Open a pull request
-4. Merge your pull request
-
-### How to start this exercise
-
-1. Right-click **Copy Exercise** and open the link in a new tab.
-
-   <a id="copy-exercise">
-      <img src="https://img.shields.io/badge/📠_Copy_Exercise-AAA" height="25pt"/>
-   </a>
-
-2. In the new tab, most of the prompts will automatically fill in for you.
-   - For owner, choose your personal account or an organization to host the repository.
-   - We recommend creating a public repository, as private repositories will [use Actions minutes](https://docs.github.chttps://github.com/guoxin-831/skills-introduction-to-github/billing/managing-billing-for-github-actions/about-billing-for-github-actions).
-   - Scroll down and click the **Create repository** button at the bottom of the form.
-
-3. After your new repository is created, wait about 20 seconds for the exercise to be prepared and buttons updated. You will continue working from your copy of the exercise.
-   - The **Copy Exercise** button will deactivate, changing to gray.
-   - The **Start Exercise** button will activate, changing to green.
-   - You will likely need to refresh the page.
-
-4. Click **Start Exercise**. Follow the step-by-step instructions and feedback will be provided as you progress.
-
-   <a id="start-exercise" href="https://github.com/guoxin-831/skills-introduction-to-github/issues/1">
-      <img src="https://img.shields.io/badge/🚀_Start_Exercise-008000" height="25pt"/>
-   </a>
-
-> [!IMPORTANT]
-> The **Start Exercise** button will activate after copying the repository. You will probably need to refresh the page.
+基于 **Model Context Protocol (MCP)** 标准构建的增强型网页内容抓取服务。旨在为大语言模型（LLM）提供精准、去噪、可结构化的网页交互能力。
 
 ---
 
-Get help: [Post in our discussion board](https://github.com/orgs/skills/discussions/categories/introduction-to-github) &bull; [Review the GitHub status page](https://www.githubstatus.com/)
+## ✨ 核心特性
 
-&copy; 2024 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
+- 🎯 **精准 CSS 选择器过滤**：支持指定 `.article-content` 或 `#main` 节点提取，拒绝无用 Token 浪费。
+- 📝 **自动转 Markdown**：集成 `html2text`，保留标题、列表、表格等高价值结构化格式。
+- 🔗 **链接与元数据提取**：自动解析网页 `Title`、`Description` 及核心超链接列表，支持 LLM 的自主决策链。
+- 🛡️ **反爬与去噪**：自动移除 `<script>`、`<style>`、`<iframe>` 等干扰节点，并伪装 Request Headers。
+- 🚀 **云原生 CI/CD**：集成 GitHub Actions，自动化构建镜像并同步至阿里云 ACR 个人版/企业版镜像仓库。
+
+---
+
+## 🛠️ 技术栈
+
+- **Language**: Python 3.10+
+- **Protocol**: Model Context Protocol (MCP)
+- **Parsing**: BeautifulSoup4, html2text, requests
+- **DevOps**: Docker, GitHub Actions, Aliyun ACR
+
+---
+
+## 🚀 快速开始
+
+### 1. 本地直接运行 (Local Environment)
+
+#### 克隆仓库与安装依赖
+```bash
+git clone [https://github.com/你的GitHub用户名/你的仓库名.git](https://github.com/你的GitHub用户名/你的仓库名.git)
+cd 你的仓库名
+
+# 安装依赖
+pip install -r requirements.txt
